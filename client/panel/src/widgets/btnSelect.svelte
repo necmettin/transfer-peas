@@ -2,7 +2,6 @@
 	import { createEventDispatcher } from "svelte";
 
 	import { Button } from "sveltestrap";
-	import { d } from "../modules/data.js";
 
 	export let id;
 	export let obj;

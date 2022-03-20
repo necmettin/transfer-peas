@@ -1,10 +1,8 @@
 <script>
-	import { onMount } from "svelte";
-
-	onMount(async () => {
-		window.location.href = "/projects";
-	});
+	import { active, projects } from "../modules/stores";
 </script>
 
-<h1>Welcome to Local Personal Assistant</h1>
-<p>Please select a project first.</p>
+<div>
+	<h1>Welcome to your Local Personal Assistant</h1>
+	<p>Please select a project first.</p>
+</div>

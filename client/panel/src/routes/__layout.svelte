@@ -1,67 +1,64 @@
 <script>
-	import LeftMenuLink from "../widgets/linkLeftMenu.svelte";
-	import { active, lists } from "../modules/stores";
+	import { onMount, tick } from "svelte";
+
+	import FooterBlock from "../blocks/FooterBlock.svelte";
+	import ModalEverything from "../blocks/ModalEverything.svelte";
+
+	import { active, projects } from "../modules/stores";
+
+	import { d } from "../modules/data";
+
+	let selectorModal = false;
+
+	onMount(async () => {
+		selectorModal = true;
+		$projects = await d.get("projects");
+	});
+
+	async function selectedObj(event) {
+		var details = event.detail;
+		$active[details[0]] = details[1];
+		console.log(details, $active);
+	}
 </script>
 
 <div class="page-flex">
-	<div class="page-left py-4">
-		<div class="pl-4 pt-4 pb-4">
-			<h1>
-				{#if $active.projects > 0}
-					{$lists.projects[$active["projects"]].title}
-				{:else}
-					<LeftMenuLink obj="projects" icon="building" title="Select a project" />
-				{/if}
-			</h1>
-		</div>
-
-		<LeftMenuLink obj="projects" icon="building" title="Projects" />
-	</div>
-	<div class="page-right p-4">
+	<div class="page-top" />
+	<div class="page-center">
+		<ModalEverything open={selectorModal} obj={"projects"} data={$projects} on:selectObj={selectedObj} />
 		<slot />
+	</div>
+	<div class="page-bottom">
+		<FooterBlock obj="projects" data={$projects} />
 	</div>
 </div>
 
 <style>
-	h1 {
-		font-size: 1.2rem;
-		color: var(--lightgray);
+	:global(body) {
+		background-color: #eee;
 	}
-
 	.page-flex {
-		display: -ms-flexbox;
-		display: -webkit-flex;
 		display: flex;
-		-webkit-flex-direction: row;
-		-ms-flex-direction: row;
-		flex-direction: row;
-		-webkit-flex-wrap: nowrap;
-		-ms-flex-wrap: nowrap;
+		flex-direction: column;
 		flex-wrap: nowrap;
-		-webkit-justify-content: flex-start;
-		-ms-flex-pack: start;
 		justify-content: flex-start;
-		-webkit-align-content: stretch;
-		-ms-flex-line-pack: stretch;
 		align-content: stretch;
-		-webkit-align-items: flex-start;
-		-ms-flex-align: start;
 		align-items: stretch;
-		min-height: 100vh;
+		height: 100vh;
+		width: 100vw;
 	}
 
-	.page-left {
-		-webkit-flex: 0 1 auto;
-		-ms-flex: 0 1 auto;
+	.page-top {
 		flex: 0 1 auto;
-		min-width: 250px;
-		width: 250px;
-		background: black;
+		background: silver;
 	}
 
-	.page-right {
-		-webkit-flex: 1 1 auto;
-		-ms-flex: 1 1 auto;
+	.page-bottom {
+		flex: 0 1 auto;
+		background: #ddd;
+	}
+
+	.page-center {
 		flex: 1 1 auto;
 	}
 
@@ -89,12 +86,15 @@
 	:global(.grid-cell) {
 		display: flex;
 		align-items: center;
-		/* justify-content: flex-start; */
 		gap: 2px;
 		padding: 5px;
 	}
 
 	:global(.grid-next) {
 		grid-column-start: 1;
+	}
+
+	:global(.object-icon) {
+		font-weight: bold;
 	}
 </style>

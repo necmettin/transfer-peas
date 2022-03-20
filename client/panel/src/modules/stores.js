@@ -6,7 +6,5 @@ export const active = writable({
 	servers: 0,
 });
 
-export const lists = writable({
-	projects: [],
-	servers: []
-});
+export const projects = writable({});
+export const servers = writable({});
